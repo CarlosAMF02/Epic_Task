@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" th:href="@{~/css/global.css}">
+    <title>Epic Task</title>
+</head>
+<body>
+    <header>
+        <h1>Epic Task</h1>
+        <div class="login-info">
+            <span sec:authentication="principal.name"></span>
+            <a href="/logout"><span class="material-icons">logout</span></a>
+        </div>
+    </header>
+
+
+    <div class="toolbar">
+        <a class="button" href="/task/new" sec:authorize-url="POST /task">cadastrar tarefa</a>
+    </div>
+
+    <div class="alert success" th:if="${message != null}">
+        <span th:text="${message}"></span>
+    </div>
+
+    <main class="cards">
+        <div class="card animated" th:each="task : ${tasks}">
+            <h2 th:text="${task.title}"></h2>
+            <div class="status">
+                <svg>
+                    <circle cx="70" cy="70" r="70" />
+                    <circle cx="70" cy="70" r="70" th:style="${'stroke-dashoffset: ' + (440 - (440 * task.status) / 100) }" />
+                </svg>
+                <div class="number">
+                    <h2 th:text="${task.status + '%'}"></h2>
+                </div>
+            </div>
+            <div class="score">
+                <span class="material-icons">star</span>
+                <span th:text="${task.score + 'pts'}"></span>
+            </div>
+            <h2 th:text="${task.user.name}"></h2>
+            <div class="actions">
+                <a th:href="${'/task/delete/' + task.id}" sec:authorize="hasRole('ADMIN')">
+                    <span class="material-icons">delete</span>
+                </a>
+                <a th:href="${'/task/' + task.id}">
+                    <span class="material-icons">edit</span>
+                </a>
+            </div>
+        </div>
+    </main>
+    <div>
+        <a href="/user"><span>Litagem de Usuários</span></a>
+    </div>
+
+</body>
+</html>
