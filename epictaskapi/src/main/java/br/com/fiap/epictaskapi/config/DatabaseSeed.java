@@ -38,9 +38,6 @@ public class DatabaseSeed implements CommandLineRunner {
             new Role("ROLE_ADMIN")
         );
 
-        System.out.println("Euuuuuu");
-        System.out.println(user1);
-
         userRepository.save(user1);
 
 

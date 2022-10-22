@@ -15,7 +15,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import br.com.fiap.epictaskapi.model.Task;
+import br.com.fiap.epictaskapi.model.User;
 import br.com.fiap.epictaskapi.service.TaskService;
+import br.com.fiap.epictaskapi.service.UserService;
 
 @Controller
 @RequestMapping("/task")
@@ -23,6 +25,9 @@ public class TaskWebController {
 
     @Autowired
     TaskService service;
+
+    @Autowired
+    UserService userService;
 
     @GetMapping
     public ModelAndView index(){
@@ -46,10 +51,15 @@ public class TaskWebController {
         String message = (task.getId() == null)
                 ?"Tarefa cadastrada com sucesso"
                 :"Tarefa alterada com sucesso";
-
-        service.save(task);
-        redirect.addFlashAttribute("message", message);
-        return "redirect:/task";
+        User user = userService.getByEmail(task.getUser().getEmail()).get();
+        if (user != null) {
+            service.save(task);
+            redirect.addFlashAttribute("message", message);
+            return "redirect:/task";
+        } else {
+            return "/task/new";
+        }
+    
     }
 
     @GetMapping("/delete/{id}")
