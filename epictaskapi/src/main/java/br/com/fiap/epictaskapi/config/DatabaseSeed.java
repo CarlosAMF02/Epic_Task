@@ -32,9 +32,9 @@ public class DatabaseSeed implements CommandLineRunner {
         );
 
         User user2 = new User(
-            "Maria", 
-            "maria@fiap.com.br", 
-            "$2a$12$RVc1Cze5T/Ea6BclNRVwQejWSlaXOfBow8KC3MU0eifsyjfOFWKE2",
+            "Admin", 
+            "admin@fiap.com.br", 
+            "$2a$12$sSeIixKX2Ji4IglHLOQS8eQcFZc7n/O0OnfheuLA416YzBHf4A/Ge",
             new Role("ROLE_ADMIN")
         );
 
