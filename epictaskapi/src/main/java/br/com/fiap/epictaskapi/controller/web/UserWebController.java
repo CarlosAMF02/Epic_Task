@@ -27,6 +27,11 @@ public class UserWebController {
         return new ModelAndView("user/index").addObject("users", userService.listAll());
     }
 
+    @GetMapping("ranking")
+    public ModelAndView ranking(){
+        return new ModelAndView("user/ranking").addObject("users", userService.ranking());
+    }
+
     @GetMapping("new")
     public String form(User user){
         return "user/new";

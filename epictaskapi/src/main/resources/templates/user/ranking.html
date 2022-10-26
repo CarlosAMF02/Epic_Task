@@ -17,33 +17,20 @@
         </div>
     </header>
 
-
-    <div class="toolbar">
-        <a class="button" href="/user/new" sec:authorize-url="POST /task">cadastrar usuário</a>
-    </div>
-
     <div class="alert success" th:if="${message != null}">
         <span th:text="${message}"></span>
     </div>
 
     <main class="cards">
         <div class="card animated" th:each="user : ${users}">
-            <h2 th:text="${user.id}"></h2>
-            <h2 th:text="${user.name}"></h2>
+            <h2 th:text="${user.rank}"></h2>
+            <h2 th:text="${user.score}"></h2>
+            <h2 th:text="${user.nome}"></h2>
             <h2 th:text="${user.email}"></h2>
-            <div class="actions">
-                <a th:href="${'/user/delete/' + user.id}" sec:authorize="hasRole('ADMIN')">
-                    <span class="material-icons">delete</span>
-                </a>
-                <a th:href="${'/user/' + user.id}">
-                    <span class="material-icons" sec:authorize="hasRole('ADMIN')">edit</span>
-                </a>
-            </div>
         </div>
     </main>
     <div>
         <a href="/task"><span>Listagem de Tarefas</span></a>
     </div>
-
 </body>
 </html>

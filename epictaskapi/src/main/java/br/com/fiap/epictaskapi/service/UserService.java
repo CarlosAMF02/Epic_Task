@@ -1,5 +1,6 @@
 package br.com.fiap.epictaskapi.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.fiap.epictaskapi.model.User;
 import br.com.fiap.epictaskapi.repository.UserRepository;
+import br.com.fiap.epictaskapi.service.Models.RankedUser;
 
 @Service
 public class UserService {
@@ -26,12 +28,35 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public List<RankedUser> ranking() {
+        List<User> users =  userRepository.findByOrderByScoreDesc();
+        ArrayList<RankedUser> ranking = new ArrayList<RankedUser>();
+        for (int i = 0; i < users.size(); i++) {
+            RankedUser ru = new RankedUser();
+            int rank = i + 1;
+            ru.setRank(rank);
+            ru.setScore(users.get(i).getScore());
+            ru.setEmail(users.get(i).getEmail());
+            ru.setNome(users.get(i).getName());
+            ranking.add(ru);
+        }
+        return ranking;
+    }
+
     public void save(User user) {
         String password = new BCryptPasswordEncoder().encode(user.getPassword());
 
         user.setPassword(password);
 
         userRepository.save(user);
+    }
+
+    public void saveScore(User user) {
+        User existUser = getById(user.getId()).orElse(null);
+        if ( existUser != null) {
+            existUser.setScore(user.getScore());
+            userRepository.save(existUser);
+        }
     }
 
     public Optional<User> getByEmail(String email) {
