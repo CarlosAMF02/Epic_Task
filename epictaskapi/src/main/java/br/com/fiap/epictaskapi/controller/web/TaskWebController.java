@@ -51,8 +51,9 @@ public class TaskWebController {
         String message = (task.getId() == null)
                 ?"Tarefa cadastrada com sucesso"
                 :"Tarefa alterada com sucesso";
-        User user = userService.getByEmail(task.getUser().getEmail()).get();
+        User user = userService.getByEmail(task.getUser().getEmail()).orElse(null);
         if (user != null) {
+            task.setUser(user);
             service.save(task);
             redirect.addFlashAttribute("message", message);
             return "redirect:/task";

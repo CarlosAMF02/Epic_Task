@@ -40,7 +40,6 @@ public class DatabaseSeed implements CommandLineRunner {
 
         userRepository.save(user1);
 
-
         userRepository.save(user2);
 
         taskRepository.saveAll(List.of(

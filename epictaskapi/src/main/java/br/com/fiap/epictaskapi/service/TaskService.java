@@ -30,6 +30,12 @@ public class TaskService {
     }
 
     public void save(Task task) {
+        Task existTask = getById(task.getId()).orElse(null);
+
+        if (existTask != null) {
+            deleteById(existTask.getId());
+        }
+        
         repository.save(task);
     }
 

@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -18,10 +19,6 @@ import javax.validation.constraints.Size;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
-
 
 @Entity
 @Table(name = "TB_USER")
@@ -38,8 +35,10 @@ public class User implements UserDetails{
     private String email;
     @NotBlank
     @Size(min = 3, message = "A senha deve conter no mínimo 3 caracteres")
-    @JsonProperty(access = Access.WRITE_ONLY)
     private String password;
+    private int score;
+    @OneToMany(mappedBy = "user")
+    private List<Task> tasks;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private List<Role> roles = new ArrayList<>();
@@ -51,12 +50,14 @@ public class User implements UserDetails{
         this.name = name;
         this.email = email;
         this.password = password;
+        this.score = 0;
     }
 
     public User(String name, String email, String password, Role role) {
         this.name = name;
         this.email = email;
         this.password = password;
+        this.score = 0;
         this.roles.add(role);
     }
 
@@ -92,7 +93,13 @@ public class User implements UserDetails{
         this.password = password;
     }
 
+    public int getScore() {
+        return score;
+    }
 
+    public void setScore(int score) {
+        this.score = score;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -123,5 +130,4 @@ public class User implements UserDetails{
     public boolean isEnabled() {
         return true;
     }
-
 }
