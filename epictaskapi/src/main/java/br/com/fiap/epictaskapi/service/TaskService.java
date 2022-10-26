@@ -33,7 +33,21 @@ public class TaskService {
         Task existTask = getById(task.getId()).orElse(null);
 
         if (existTask != null) {
+            if (existTask.getStatus() == 100 && task.getStatus() != 100) {
+                User user = task.getUser();
+                int newScore = user.getScore() - task.getScore();
+                user.setScore(newScore);
+                userService.save(user);
+            }
             deleteById(existTask.getId());
+        }
+
+        if (task.getStatus() == 100) {
+            User user = task.getUser();
+            System.out.println("SCORE: " + user.getScore());
+            int newScore = user.getScore() + task.getScore();
+            user.setScore(newScore);
+            userService.save(user);
         }
         
         repository.save(task);

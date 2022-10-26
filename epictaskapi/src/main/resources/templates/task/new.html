@@ -56,10 +56,11 @@
                     id="status"
                 >
                 <input 
-                    placeholder="user" 
-                    type="email" 
-                    id="email" 
-                    th:field="*{user.email}"
+                    placeholder="user"
+                    type="email"
+                    id="email"
+                    name="email"
+                    th:value="*{user.email}"
                 >
 
                 <div class="buttons">
